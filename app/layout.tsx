@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: 'HireFlow ATS — Modern Applicant Tracking System',
   description:
     'Lightweight, high-performance applicant tracking system for modern recruitment teams. Manage candidates, monitor recruitment pipelines, search candidate records, and view hiring analytics.',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({

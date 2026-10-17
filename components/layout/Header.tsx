@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import {
   Menu,
@@ -51,6 +52,14 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <Menu className="h-5 w-5" />
         </button>
+
+        <Image
+          src="/logo.png"
+          alt="HireFlow Logo"
+          width={32}
+          height={32}
+          className="h-8 w-8 rounded-lg lg:hidden shadow-xs object-cover"
+        />
 
         <div>
           <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight">

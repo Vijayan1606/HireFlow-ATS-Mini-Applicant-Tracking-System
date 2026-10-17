@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -10,7 +11,6 @@ import {
   Settings,
   Sparkles,
   Database,
-  Layers,
   X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
@@ -73,9 +73,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Brand Header */}
         <div className="flex h-16 items-center justify-between px-6 border-b border-slate-100">
           <Link href="/dashboard" className="flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white shadow-xs group-hover:scale-105 transition-transform">
-              <Layers className="h-5 w-5" />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="HireFlow ATS Logo"
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-xl shadow-xs group-hover:scale-105 transition-transform object-cover"
+              priority
+            />
             <div>
               <span className="font-bold text-slate-900 tracking-tight text-base">HireFlow</span>
               <span className="ml-1 text-[11px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">ATS</span>
@@ -143,39 +148,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             );
           })}
         </nav>
-
-        {/* Database Status Card */}
-        <div className="p-4 border-t border-slate-100">
-          <div className="rounded-xl border border-slate-200/90 bg-slate-50/80 p-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Database className="h-4 w-4 text-indigo-600" />
-                <span className="text-xs font-semibold text-slate-800">Database</span>
-              </div>
-              <span
-                className={cn(
-                  'inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-full border',
-                  isLiveDb
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                    : 'bg-indigo-50 text-indigo-700 border-indigo-200'
-                )}
-              >
-                <span
-                  className={cn(
-                    'w-1.5 h-1.5 rounded-full mr-1',
-                    isLiveDb ? 'bg-emerald-500 animate-pulse' : 'bg-indigo-500'
-                  )}
-                />
-                {isLiveDb ? 'Supabase Live' : 'Demo Active'}
-              </span>
-            </div>
-            <p className="mt-1.5 text-[11px] text-slate-500 leading-tight">
-              {isLiveDb
-                ? 'Connected to your Supabase PostgreSQL database.'
-                : 'Interactive demo store ready. Add Supabase keys to sync.'}
-            </p>
-          </div>
-        </div>
+        
       </aside>
     </>
   );
