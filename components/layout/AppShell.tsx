@@ -160,6 +160,8 @@ export const AppShellContent: React.FC<{
               onOpenAddModal={openAddModal}
               title={headerTitle}
               subtitle={headerSubtitle}
+              candidates={candidates}
+              onSelectCandidate={openDetailModal}
             />
           </Suspense>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Candidate, CandidateStage, CANDIDATE_STAGES } from '@/types/candidate';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -23,6 +23,8 @@ import {
 
 interface CandidatesTableProps {
   candidates: Candidate[];
+  initialSearch?: string;
+  initialStage?: string;
   onViewCandidate: (candidate: Candidate) => void;
   onEditCandidate: (candidate: Candidate) => void;
   onDeleteCandidate: (candidate: Candidate) => void;
@@ -35,6 +37,8 @@ type SortOrder = 'asc' | 'desc';
 
 export const CandidatesTable: React.FC<CandidatesTableProps> = ({
   candidates,
+  initialSearch = '',
+  initialStage = 'All',
   onViewCandidate,
   onEditCandidate,
   onDeleteCandidate,
@@ -42,10 +46,25 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({
   onOpenAddModal,
 }) => {
   // Search and Filter states
-  const [search, setSearch] = useState('');
-  const [selectedStage, setSelectedStage] = useState<string>('All');
+  const [search, setSearch] = useState(initialSearch);
+  const [selectedStage, setSelectedStage] = useState<string>(initialStage);
   const [selectedPosition, setSelectedPosition] = useState<string>('All');
   const [selectedExpRange, setSelectedExpRange] = useState<string>('All');
+
+  // Sync when initial props change (e.g. from global search or URL navigation)
+  useEffect(() => {
+    if (initialSearch !== undefined) {
+      setSearch(initialSearch);
+      setCurrentPage(1);
+    }
+  }, [initialSearch]);
+
+  useEffect(() => {
+    if (initialStage !== undefined) {
+      setSelectedStage(initialStage);
+      setCurrentPage(1);
+    }
+  }, [initialStage]);
 
   // Sorting state
   const [sortField, setSortField] = useState<SortField>('applied_at');
@@ -142,6 +161,9 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({
     setSelectedPosition('All');
     setSelectedExpRange('All');
     setCurrentPage(1);
+    if (typeof window !== 'undefined' && window.history?.replaceState) {
+      window.history.replaceState({}, '', '/candidates');
+    }
   };
 
   const hasActiveFilters =
@@ -196,8 +218,16 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({
             />
             {search && (
               <button
-                onClick={() => setSearch('')}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                type="button"
+                onClick={() => {
+                  setSearch('');
+                  setCurrentPage(1);
+                  if (typeof window !== 'undefined' && window.history?.replaceState) {
+                    window.history.replaceState({}, '', '/candidates');
+                  }
+                }}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
+                title="Clear search"
               >
                 <X className="h-4 w-4" />
               </button>

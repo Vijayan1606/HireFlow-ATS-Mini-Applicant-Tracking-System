@@ -67,6 +67,8 @@ function CandidatesContent() {
       {/* Main Candidates Table */}
       <CandidatesTable
         candidates={candidates}
+        initialSearch={initialSearch}
+        initialStage={initialStage}
         onViewCandidate={openDetailModal}
         onEditCandidate={openEditModal}
         onDeleteCandidate={openDeleteModal}
